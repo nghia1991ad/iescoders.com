@@ -4,29 +4,33 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 v_model = pd.read_csv('v_model.dat')
-
+print("Start read the velocity model")
+print(v_model)
 p1 = 0.1236
 p2 = 0.2217
 n = 100
 
 result = [['p','X','T']]
 for p in np.linspace(p1, p2, n):
+	print("Calculate for p =",p)
 	X = 0; T = 0;
 	for i in range(0, len(v_model)-1):
-        	p = p
-        	h = v_model.h[i+1] - v_model.h[i]
-        	utop = 1/v_model.vp[i]
-        	ubot = 1/v_model.vp[i+1]
-        	dx, dt, irtr = layerxt(p,h,utop,ubot)
-        	X += dx; T += dt
+		print("Calculate for layer ",i)
+		p = p
+		h = v_model.h[i+1] - v_model.h[i]
+		utop = 1/v_model.vp[i]
+		ubot = 1/v_model.vp[i+1]
+		dx, dt, irtr = layerxt(p,h,utop,ubot)
+		X += dx; T += dt
 		#If the ray reflected at layer the dx, dt calculation stops
-        	if irtr == 2:
+		if irtr == 2:
                 	break
-        result.append([p,X,T])
+	result.append([p,X,T])
 
 result_df = pd.DataFrame(result, columns=result.pop(0))
 result_df = result_df[::-1]
-
+print("Here is the few rows of the result")
+print(result_df.head())
 #Multiply by 2 to get total surface-to-surface value ot X(p) and T(p)
 result_df['T'] = 2*result_df['T']
 result_df['X'] = 2*result_df['X']

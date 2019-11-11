@@ -56,7 +56,7 @@ def layerxt(p,h,utop,ubot):
 		irtr = 2	
 		return dx,dt,irtr
 
-        irtr=1
+	irtr=1
 	eta2=sqrt(u2**2-p**2)
 	x2=eta2/(u2*b*p)
 	tau2=(log((u2+eta2)/p)-eta2/u2)/b
